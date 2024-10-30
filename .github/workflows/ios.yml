@@ -6,8 +6,7 @@ on:
 jobs:
   build-ipa:
     runs-on: macos-latest
-  build-and-test:
-    runs-on: ubuntu-latest
+ 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -15,7 +14,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.16.0'
+          flutter-version: 'latest'
           
       - name: Clean Flutter cache
         run: flutter clean   
