@@ -6,10 +6,11 @@ on:
 jobs:
   build-ipa:
     runs-on: macos-latest
- 
+  build-and-test:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
