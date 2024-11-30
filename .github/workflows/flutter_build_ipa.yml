@@ -23,17 +23,15 @@ jobs:
           flutter-version: '3.24.5'
           channel: 'stable'
 
-      # 设置最新稳定的Xcode版本
       - name: Set up Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
 
-      # 安装Flutter项目依赖
       - name: Install dependencies
         run: flutter pub get
 
 
       - name: Build iOS IPA (Unsigned)
-        run: flutter build ios --release --no-tree-shake-icons --no-codesign --output.
-        working-directory: <实际项目根目录路径，如果默认没问题可不改>
+        run: flutter build ios --release --no-tree-shake-icons --no-codesign --output./music.ipa
+        working-directory:
