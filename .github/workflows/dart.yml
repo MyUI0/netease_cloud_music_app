@@ -37,17 +37,16 @@ jobs:
       - name: Build iOS IPA (Unsigned)
         run: flutter build ios --release --no-tree-shake-icons --no-codesign
         working-directory:
-
-      # 创建GitHub Release
+     # 创建GitHub Release
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         with:
-        tag_name: ${{ github.run_id }}
-        release_name: "Release ${{ github.run_id }}"
-        draft: false
-        prerelease: false
-        token: ${{ secrets.g123 }}
+          tag_name: ${{ github.run_id }}
+          release_name: "Release ${{ github.run_id }}"
+          draft: false
+          prerelease: false
+          token: ${{ secrets.g123 }}
 
       # 上传IPA文件到GitHub Release（使用构建输出的原始文件名及路径）
       - name: Upload IPA to GitHub Release
