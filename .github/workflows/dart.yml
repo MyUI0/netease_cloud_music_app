@@ -44,7 +44,7 @@ jobs:
           # 构建信息显示IPA相关文件在build/ios/iphoneos/目录下，这里获取该目录下的IPA文件名（假设只有一个IPA文件生成）
           IPA_FILE=$(ls build/ios/iphoneos/*.ipa)
           # 定义新的文件名，这里示例为添加版本号等信息，可按需修改
-          NEW_IPA_FILE="muusic_${{ github.run_id }}.ipa"
+          NEW_IPA_FILE="muusic_${{ github.run_id }}.app"
           mv $IPA_FILE $NEW_IPA_FILE
 
       # 创建GitHub Release
@@ -56,13 +56,13 @@ jobs:
           release_name: "Release ${{ github.run_id }}"
           draft: false
           prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.g123 }}
 
       # 上传IPA文件到GitHub Release（准确填写IPA文件实际路径）
       - name: Upload IPA to GitHub Release
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/ios/iphoneos/your_app_name_${{ github.run_id }}.ipa
-          asset_name: music_${{ github.run_id }}.ipa
+          asset_path: build/ios/iphoneos/your_app_name_${{ github.run_id }}.app
+          asset_name: music_${{ github.run_id }}.app
           asset_content_type: application/octet-stream
