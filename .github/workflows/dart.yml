@@ -38,7 +38,7 @@ jobs:
           --export-options-plist <(echo '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>compileBitcode</key><false/><key>method</key><string>development</string><key>signingCertificate</key><string></string><key>signingStyle</key><string>manual</string><key>teamID</key><string></string></dict></plist>')
           # 上述命令利用 flutter build ipa 直接生成 ipa 文件，指定发布模式（--release）且不进行代码签名（--no-codesign），
           # 通过 --export-options-plist 设置导出选项的配置信息，这里使用了内联的 xml 格式配置来简化操作，定义了诸如不编译位代码（compileBitcode 设为 false）等基本属性，模拟开发环境（method 设为 development）且采用手动签名风格（signingStyle 设为 manual）但实际不提供签名相关内容（signingCertificate 和 teamID 为空）
-        working-directory:.  # 根据项目实际根目录情况调整，这里假设当前目录为项目根目录
+        working-directory:
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
