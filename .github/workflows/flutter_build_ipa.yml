@@ -35,6 +35,6 @@ jobs:
 
 
       # 构建无签名的iOS IPA（使用适合新版本Flutter的参数，此处示例，可按需调整）
-      - name: Build iOS IPA (Unsigned)
-        run: flutter build ios --release --no-tree-shake-icons
-        working-directory:
+     - name: Build iOS IPA (Unsigned)
+        run: flutter build ios --release --no-tree-shake-icons --no-codesign
+       working-directory:
