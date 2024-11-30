@@ -8,34 +8,39 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      # 设置Flutter环境
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+      # 设置Dart环境，有助于后续获取Flutter版本相关操作
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+
+      # 获取最新的Flutter稳定版本号，并设置Flutter环境
+      - name: Set up Flutter with latest version
+        run: |
+          export FLUTTER_VERSION=$(flutter version --local | grep -oP 'Flutter \K.*(?= \(Channel stable\))')
+          echo "FLUTTER_VERSION=$FLUTTER_VERSION" >> $GITHUB_ENV
+          flutter channel stable
+          flutter upgrade
+          echo "Flutter version: $FLUTTER_VERSION"
+
+      # 设置最新稳定的Xcode版本
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
         with:
-          flutter-version: '3.24.5'
-          channel: 'stable'
-
-      # 设置Java环境
-      - name: Set up Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '11'
-
-
+          xcode-version: latest-stable
 
       # 安装Flutter项目依赖
       - name: Install dependencies
         run: flutter pub get
 
-   
+      # 运行Flutter项目测试（可根据实际需求决定是否保留这一步）
+      - name: Run tests
+        run: flutter test
 
-      # 构建无签名的iOS IPA
+      # 构建无签名的iOS IPA（使用适合新版本Flutter的参数，此处示例，可按需调整）
       - name: Build iOS IPA (Unsigned)
-        run: flutter build ios --no-codesign
+        run: flutter build ios --release --no-tree-shake-icons
         working-directory:
