@@ -36,17 +36,16 @@ jobs:
         run: flutter build ios --release --no-tree-shake-icons --no-codesign
         working-directory:
 
-      # 将Runner.app打包成zip文件（可根据需求选择是否保留这一步，若想直接下载.app文件则可去掉这步，这里保留示例）
-      - name: Zip Runner.app
+      - name: Package.app folder into IPA format
         run: |
-          cd build/ios/iphoneos
-          zip -r Runner.zip Runner.app
+          cd build/ios/iphoneos  # 这里需要确保在正确的目录下执行后续操作
+          mkdir -p Payload
+          mv Runner.app Payload/
+          zip -r Runner.ipa Payload
+          rm -rf Payload
 
-      # 上传IPA文件到GitHub Release相关步骤都可去掉，以下已删除
-
-      # 设置Artifact，将构建产物指定为Artifact，方便后续下载
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: iOS_Build_Artifact
-          path: build/ios/iphoneos/Runner.zip  # 如果前面没打包成zip文件，这里可以改为 build/ios/iphoneos/Runner.app，根据实际想下载的文件来指定路径
+          path: build/ios/iphoneos/Runner.ipa
