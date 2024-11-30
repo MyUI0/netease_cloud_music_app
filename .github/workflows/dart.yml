@@ -5,11 +5,7 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-run: |
-    echo '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>compileBitcode</key><false/><key>method</key><string>development</string><key>signingCertificate</key><string></string><key>signingStyle</key><string>manual</string><key>teamID</key><string></string></dict></plist>' > export_options.plist
-    flutter build ipa --release --no-codesign --export-options-plist export_options.plist
-    
-  workflow_dispatch: 
+  workflow_dispatch:  # 添加手动触发工作流的配置，方便按需手动构建
 
 jobs:
   build:
@@ -38,14 +34,12 @@ jobs:
         
       - name: Build iOS IPA (Unsigned)
         run: |
-          flutter build ipa --release --no-codesign \
-          --export-options-plist <(echo '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>compileBitcode</key><false/><key>method</key><string>development</string><key>signingCertificate</key><string></string><key>signingStyle</key><string>manual</string><key>teamID</key><string></string></dict></plist>')
-          # 上述命令利用 flutter build ipa 直接生成 ipa 文件，指定发布模式（--release）且不进行代码签名（--no-codesign），
-          # 通过 --export-options-plist 设置导出选项的配置信息，这里使用了内联的 xml 格式配置来简化操作，定义了诸如不编译位代码（compileBitcode 设为 false）等基本属性，模拟开发环境（method 设为 development）且采用手动签名风格（signingStyle 设为 manual）但实际不提供签名相关内容（signingCertificate 和 teamID 为空）
-        working-directory:
+          echo '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>compileBitcode</key><false/><key>method</key><string>development</string><key>signingCertificate</key><string></string><key>signingStyle</key><string>manual</string><key>teamID</key><string></string></dict></plist>' > export_options.plist
+          flutter build ipa --release --no-codesign --export-options-plist export_options.plist
+        working-directory:.
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: iOS_Build_Artifact
-          path: build/ios/ipa/*.ipa  # 上传生成的 ipa 文件，这里假设生成的 ipa 文件在 build/ios/ipa/ 目录下，可根据实际调整路径
+          path: build/ios/ipa/*.ipa
