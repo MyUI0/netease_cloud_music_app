@@ -37,7 +37,7 @@ jobs:
         run: flutter build ios --release --no-tree-shake-icons --no-codesign
         working-directory:
 
-      # 创建GitHub Release，将版本号硬编码为1.0（你可以根据实际情况修改）
+   #    创建GitHub Release
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v2
@@ -46,7 +46,8 @@ jobs:
           name: v1.0
           draft: false
           prerelease: false
-          token: ${{ secrets.G123 }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
 
       # 将Runner.app打包成zip文件
       - name: Zip Runner.app
@@ -62,3 +63,4 @@ jobs:
           asset_path: build/ios/iphoneos/Runner.zip
           asset_name: Runner.zip
           asset_content_type: application/zip
+          token: ${{ secrets.GITHUB_TOKEN }}
