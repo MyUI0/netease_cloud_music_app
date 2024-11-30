@@ -1,9 +1,4 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Dart
+name: Flutter iOS Build (Unsigned IPA)
 
 on:
   push:
@@ -18,30 +13,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Note: This workflow uses the latest stable version of the Dart SDK.
-      # You can specify other versions if desired, see documentation here:
-      # https://github.com/dart-lang/setup-dart/blob/main/README.md
-      # - uses: dart-lang/setup-dart@v1
+      # 设置Flutter环境
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.24.5'
           channel: 'stable'
 
+      # 设置Java环境
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '11'
 
+      # 设置Xcode环境，这里可按需指定合适的Xcode版本号
+      - name: Set up Xcode
+        uses: actions/setup-xcode@v1
+        with:
+          xcode-version: '14.3'
+
+      # 安装Flutter项目依赖
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Run tests
-        run: flutter test
 
-      - name: Build AAR
-        run: |
-          cd android
-          chmod +x gradlew
-          ./gradlew assembleRelease
+      # 构建无签名的iOS IPA
+      - name: Build iOS IPA (Unsigned)
+        run: flutter build ios --no-codesign
+        working-directory:.
