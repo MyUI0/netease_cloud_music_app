@@ -55,12 +55,11 @@ jobs:
           cd build/ios/iphoneos
           zip -r Runner.zip Runner.app
 
-      # 上传IPA文件到GitHub Release（使用构建输出的压缩文件路径及名称）
+     # 上传IPA文件到GitHub Release（使用构建输出的压缩文件路径及名称）
       - name: Upload IPA to GitHub Release
         uses: actions/upload-release-asset@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: https://uploads.github.com/repos/MyUI0/netease_cloud_music_app/releases/188286231/assets{?name,label}
           asset_path: build/ios/iphoneos/Runner.zip
           asset_name: Runner.zip
           asset_content_type: application/zip
-          token: ${{ secrets.GITHUB_TOKEN }}
