@@ -35,5 +35,5 @@ jobs:
 
 
       - name: Build iOS IPA (Unsigned)
-        run: flutter build ios --release --no-tree-shake-icons --no-codesign
-        working-directory:
+        run: flutter build ios --release --no-tree-shake-icons --no-codesign --output.
+        working-directory: <实际项目根目录路径，如果默认没问题可不改>
