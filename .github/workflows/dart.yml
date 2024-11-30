@@ -43,10 +43,10 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.VERSION }}
-          name: v${{ env.VERSION }}"
+          name: v${{ env.VERSION }}
           draft: false
           prerelease: false
-          token: ${{ secrets.g123 }}
+          token: ${{ secrets.G123 }}
 
       # 上传IPA文件到GitHub Release（使用构建输出的原始文件名及路径）
       - name: Upload IPA to GitHub Release
