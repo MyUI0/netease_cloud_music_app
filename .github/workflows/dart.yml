@@ -5,6 +5,7 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+  workflow_dispatch:  # 添加手动触发工作流的配置
 
 jobs:
   build:
@@ -31,14 +32,12 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
         
-      - name: Check current working directory
-        run: pwd
 
       - name: Build iOS IPA (Unsigned)
         run: flutter build ios --release --no-tree-shake-icons --no-codesign
         working-directory:
 
-      # 创建GitHub Release，将版本号硬编码为1.0
+      # 创建GitHub Release，将版本号硬编码为1.0（你可以根据实际情况修改）
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v2
@@ -49,11 +48,17 @@ jobs:
           prerelease: false
           token: ${{ secrets.G123 }}
 
-      # 上传IPA文件到GitHub Release（使用构建输出的原始文件名及路径）
+      # 将Runner.app打包成zip文件
+      - name: Zip Runner.app
+        run: |
+          cd build/ios/iphoneos
+          zip -r Runner.zip Runner.app
+
+      # 上传IPA文件到GitHub Release（使用构建输出的压缩文件路径及名称）
       - name: Upload IPA to GitHub Release
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/ios/iphoneos/Runner.app
-          asset_name: Runner.app
-          asset_content_type: application/octet-stream
+          asset_path: build/ios/iphoneos/Runner.zip
+          asset_name: Runner.zip
+          asset_content_type: application/zip
