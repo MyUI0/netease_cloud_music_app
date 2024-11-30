@@ -42,7 +42,7 @@ jobs:
       - name: Rename IPA file
         run: |
           # 构建信息显示IPA相关文件在build/ios/iphoneos/目录下，这里获取该目录下的IPA文件名（假设只有一个IPA文件生成）
-          IPA_FILE=$(ls build/ios/iphoneos/*.ipa)
+          IPA_FILE=$(ls build/ios/iphoneos/*.app)
           # 定义新的文件名，这里示例为添加版本号等信息，可按需修改
           NEW_IPA_FILE="muusic_${{ github.run_id }}.app"
           mv $IPA_FILE $NEW_IPA_FILE
