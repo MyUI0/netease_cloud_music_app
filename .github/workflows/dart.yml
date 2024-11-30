@@ -32,34 +32,21 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
         
-
       - name: Build iOS IPA (Unsigned)
         run: flutter build ios --release --no-tree-shake-icons --no-codesign
         working-directory:
 
-   #    创建GitHub Release
-      - name: Create GitHub Release
-        id: create_release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: 1.0
-          name: v1.0
-          draft: false
-          prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-
-      # 将Runner.app打包成zip文件
+      # 将Runner.app打包成zip文件（可根据需求选择是否保留这一步，若想直接下载.app文件则可去掉这步，这里保留示例）
       - name: Zip Runner.app
         run: |
           cd build/ios/iphoneos
           zip -r Runner.zip Runner.app
 
-     # 上传IPA文件到GitHub Release（使用构建输出的压缩文件路径及名称）
-      - name: Upload IPA to GitHub Release
-        uses: actions/upload-release-asset@v1
+      # 上传IPA文件到GitHub Release相关步骤都可去掉，以下已删除
+
+      # 设置Artifact，将构建产物指定为Artifact，方便后续下载
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
         with:
-          upload_url: https://uploads.github.com/repos/MyUI0/netease_cloud_music_app/releases/188286231/assets{?name,label}
-          asset_path: build/ios/iphoneos/Runner.zip
-          asset_name: Runner.zip
-          asset_content_type: application/zip
+          name: iOS_Build_Artifact
+          path: build/ios/iphoneos/Runner.zip  # 如果前面没打包成zip文件，这里可以改为 build/ios/iphoneos/Runner.app，根据实际想下载的文件来指定路径
