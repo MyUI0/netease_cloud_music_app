@@ -42,4 +42,4 @@ jobs:
       # 构建无签名的iOS IPA
       - name: Build iOS IPA (Unsigned)
         run: flutter build ios --no-codesign
-        working-directory:.
+        working-directory:
