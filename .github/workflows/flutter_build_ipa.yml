@@ -30,8 +30,10 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
-
+        
+      - name: Check current working directory
+        run: pwd
 
       - name: Build iOS IPA (Unsigned)
-        run: flutter build ios --release --no-tree-shake-icons --no-codesign --output./music.ipa
+        run: flutter build ios --release --no-tree-shake-icons --no-codesign
         working-directory:
